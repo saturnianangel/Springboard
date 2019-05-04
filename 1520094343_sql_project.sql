@@ -85,25 +85,50 @@ FROM `Facilities`
 who signed up. Do not use the LIMIT clause for your solution. */
 
 SELECT firstname, surname, MAX( joindate ) 
-FROM  `Members`
+FROM  `Members` 
+WHERE firstname !=  'GUEST'
+
+Darren Smith
+2012-09-26 18:08:45
+
 
 /* Q7: How can you produce a list of all members who have used a tennis court?
 Include in your output the name of the court, and the name of the member
 formatted as a single column. Ensure no duplicate data, and order by
 the member name. */
 
+SELECT DISTINCT 
+	CONCAT(firstname, ' ', surname) as fullname
+    , name as facilityname
+FROM Facilities f, Bookings b, Members m 
+WHERE f.facid = b.facid in (0,1) and m.memid = b.memid 
+ORDER BY fullname
 
 /* Q8: How can you produce a list of bookings on the day of 2012-09-14 which
 will cost the member (or guest) more than $30? Remember that guests have
 different costs to members (the listed costs are per half-hour 'slot'), and
 the guest user's ID is always 0. Include in your output the name of the
 facility, the name of the member formatted as a single column, and the cost.
-Order by descending cost, and do not use any subqueries. */
+Order by descending cost, and do not use any subqueries. */ 
+SELECT DISTINCT 
+	CONCAT(firstname, ' ', surname) as fullname
+    , name as facilityname
+	, IF (m.memid = 0, guestcost, membercost) as cost
+FROM Facilities f, Bookings b, Members m 
+WHERE f.facid = b.facid and m.memid = b.memid and
+(m.memid = 0 and guestcost > 30) OR (m.memid != 0 and membercost > 30)
+and (b.starttime LIKE '2012-09-14')
 
 
 /* Q9: This time, produce the same result as in Q8, but using a subquery. */
-
+NEED HELP
 
 /* Q10: Produce a list of facilities with a total revenue less than 1000.
 The output of facility name and total revenue, sorted by revenue. Remember
 that there's a different cost for guests and members! */
+NEED HELP
+
+SELECT name
+FROM Facilities
+WHERE name in
+(for each facility find total bookings and multiply by cost???) > 1000
