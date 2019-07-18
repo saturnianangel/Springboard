@@ -121,7 +121,12 @@ and (b.starttime LIKE '2012-09-14')
 
 
 /* Q9: This time, produce the same result as in Q8, but using a subquery. */
-NEED HELP
+SELECT DISTINCT 
+	CONCAT(firstname, ' ', surname) as fullname
+    , name as facilityname
+	, IF (m.memid = 0, guestcost, membercost) as cost
+FROM Facilities f
+WHERE facid in (SELECT facid in Bookings b where )
 
 /* Q10: Produce a list of facilities with a total revenue less than 1000.
 The output of facility name and total revenue, sorted by revenue. Remember
